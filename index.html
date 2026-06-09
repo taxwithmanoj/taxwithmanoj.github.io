@@ -2,35 +2,1042 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tax With Manoj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax With Manoj | Taxation & Advisory Excellence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #0b1f3a; color: white; }
-    header { padding: 60px; text-align: center; background: #102a4c; }
-    h1 { font-size: 40px; margin: 0; color: gold; }
-    p { font-size: 18px; margin-top: 10px; color: #ddd; }
-    section { padding: 40px; max-width: 900px; margin: auto; }
-    .card { background: white; color: black; padding: 20px; margin: 15px 0; border-radius: 10px; }
-    footer { text-align: center; padding: 20px; background: #102a4c; margin-top: 40px; }
-    a { color: gold; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #04090f;
+      --deep: #071524;
+      --panel: #0b1e30;
+      --card: #0f2337;
+      --gold: #c8a84b;
+      --gold2: #e2c96e;
+      --gold3: rgba(200,168,75,0.12);
+      --white: #ffffff;
+      --mist: #c8d4e0;
+      --gray: #6b7e92;
+      --line: rgba(200,168,75,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--ink); color: var(--white); overflow-x: hidden; }
+
+    /* ── LOADER ── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--ink);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hide { opacity: 0; visibility: hidden; }
+    .loader-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; color: var(--gold); letter-spacing: 4px;
+      animation: loaderPulse 1.5s ease infinite;
+    }
+    .loader-bar {
+      width: 200px; height: 1px; background: rgba(200,168,75,0.2);
+      margin-top: 24px; overflow: hidden;
+    }
+    .loader-fill {
+      height: 100%; background: var(--gold);
+      animation: loaderFill 1.8s ease forwards;
+    }
+    @keyframes loaderPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+    @keyframes loaderFill { from{width:0} to{width:100%} }
+
+    /* ── CURSOR ── */
+    .cursor {
+      width: 8px; height: 8px; background: var(--gold);
+      border-radius: 50%; position: fixed; pointer-events: none;
+      z-index: 9998; transform: translate(-50%,-50%);
+      transition: transform 0.1s; mix-blend-mode: normal;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(200,168,75,0.5);
+      border-radius: 50%; position: fixed; pointer-events: none;
+      z-index: 9997; transform: translate(-50%,-50%);
+      transition: all 0.15s ease;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 500;
+      padding: 22px 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(4,9,15,0.96);
+      backdrop-filter: blur(20px);
+      padding: 14px 72px;
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; color: var(--gold); letter-spacing: 2px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      color: var(--mist); text-decoration: none;
+      font-size: 13px; font-weight: 400; letter-spacing: 1.5px;
+      text-transform: uppercase; position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: 11px 28px; text-decoration: none;
+      transition: all 0.3s; font-weight: 500;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--ink); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; position: relative;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 140px 72px 100px;
+      overflow: hidden;
+    }
+    .hero-canvas {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-lines {
+      position: absolute; inset: 0; z-index: 1;
+      background-image:
+        linear-gradient(rgba(200,168,75,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,168,75,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    .hero-glow {
+      position: absolute; width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,168,75,0.06) 0%, transparent 70%);
+      top: -100px; right: -100px; z-index: 1;
+      animation: glowFloat 8s ease-in-out infinite;
+    }
+    .hero-glow2 {
+      position: absolute; width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,168,75,0.04) 0%, transparent 70%);
+      bottom: 0; left: 200px; z-index: 1;
+      animation: glowFloat 10s ease-in-out infinite reverse;
+    }
+    @keyframes glowFloat {
+      0%,100%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-40px) scale(1.05); }
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 40px;
+      opacity: 0; animation: riseIn 1s 0.3s ease forwards;
+    }
+    .hero-tag::before {
+      content: ''; width: 40px; height: 1px; background: var(--gold);
+    }
+    .hero-h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 700; line-height: 1.0; letter-spacing: -1px;
+      margin-bottom: 32px;
+      opacity: 0; animation: riseIn 1s 0.5s ease forwards;
+    }
+    .hero-h1 em { color: var(--gold); font-style: normal; }
+    .hero-h1 .outline {
+      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+      color: transparent;
+    }
+    .hero-sub {
+      font-size: 17px; color: var(--mist); line-height: 1.8;
+      max-width: 520px; margin-bottom: 56px; font-weight: 300;
+      opacity: 0; animation: riseIn 1s 0.7s ease forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      opacity: 0; animation: riseIn 1s 0.9s ease forwards;
+    }
+    .btn-gold {
+      background: var(--gold); color: var(--ink);
+      padding: 18px 44px; font-size: 13px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-gold::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold2); transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .btn-gold:hover::before { transform: translateX(0); }
+    .btn-gold span { position: relative; z-index: 1; }
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+      padding: 18px 44px; font-size: 13px; font-weight: 400;
+      letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-metrics {
+      position: absolute; right: 72px; bottom: 80px; z-index: 2;
+      display: flex; flex-direction: column; gap: 32px; text-align: right;
+      opacity: 0; animation: riseIn 1s 1.1s ease forwards;
+    }
+    .metric-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 700; color: var(--gold); line-height: 1;
+    }
+    .metric-label { font-size: 11px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+    .metric-divider { width: 1px; height: 60px; background: var(--line); margin-left: auto; }
+
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 72px; z-index: 2;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray);
+      opacity: 0; animation: riseIn 1s 1.3s ease forwards;
+    }
+    .scroll-line {
+      width: 40px; height: 1px; background: var(--gray);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%; background: var(--gold);
+      animation: scrollAnim 2s ease infinite;
+    }
+    @keyframes scrollAnim { 0%{left:-100%} 100%{left:100%} }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--gold); padding: 18px 0; overflow: hidden;
+      border-top: none; border-bottom: none;
+    }
+    .marquee-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marqueeScroll 25s linear infinite;
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 24px;
+      padding: 0 40px;
+      font-size: 12px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--ink);
+    }
+    .marquee-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; opacity: 0.4; }
+    @keyframes marqueeScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 140px 72px; background: var(--deep);
+      position: relative; overflow: hidden;
+    }
+    #about::before {
+      content: 'MANOJ'; position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 240px; font-weight: 700;
+      color: rgba(200,168,75,0.03); right: -20px; top: 50%;
+      transform: translateY(-50%); pointer-events: none; line-height: 1;
+      letter-spacing: -10px;
+    }
+    .about-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+      max-width: 1200px; margin: 0 auto; position: relative;
+    }
+    .about-visual { position: relative; }
+    .about-frame {
+      aspect-ratio: 3/4; background: var(--panel);
+      border: 1px solid var(--line); position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .about-frame::before {
+      content: ''; position: absolute; inset: 20px;
+      border: 1px solid var(--line);
+    }
+    .about-frame-icon { font-size: 100px; opacity: 0.6; }
+    .about-accent {
+      position: absolute; bottom: -24px; left: -24px;
+      width: 180px; background: var(--gold);
+      padding: 28px 24px;
+    }
+    .about-accent-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px; font-weight: 700; color: var(--ink); line-height: 1;
+    }
+    .about-accent-text { font-size: 11px; color: var(--ink); margin-top: 4px; opacity: 0.7; letter-spacing: 1px; }
+    .about-corner {
+      position: absolute; top: -16px; right: -16px;
+      width: 80px; height: 80px; border: 1px solid var(--gold);
+    }
+    .section-eyebrow {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+    }
+    .section-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .section-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 56px); font-weight: 700;
+      line-height: 1.1; margin-bottom: 28px;
+    }
+    .section-body { font-size: 16px; color: var(--mist); line-height: 1.9; font-weight: 300; margin-bottom: 48px; }
+    .about-pillars { display: flex; flex-direction: column; gap: 0; }
+    .pillar {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: padding-left 0.3s;
+    }
+    .pillar:hover { padding-left: 8px; }
+    .pillar-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; color: var(--gold); min-width: 28px;
+      margin-top: 2px; letter-spacing: 1px;
+    }
+    .pillar h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .pillar p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+    /* ── SERVICES ── */
+    #services { padding: 140px 72px; background: var(--ink); }
+    .services-top {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      max-width: 1200px; margin: 0 auto 80px; flex-wrap: wrap; gap: 32px;
+    }
+    .services-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .svc {
+      background: var(--ink); padding: 48px 40px;
+      transition: all 0.4s ease; position: relative; overflow: hidden;
+      cursor: default;
+    }
+    .svc::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 0;
+      background: linear-gradient(180deg, rgba(200,168,75,0.06) 0%, transparent 100%);
+      transition: height 0.4s ease;
+    }
+    .svc:hover { background: var(--panel); }
+    .svc:hover::before { height: 100%; }
+    .svc-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px; font-weight: 700;
+      color: rgba(200,168,75,0.08); line-height: 1;
+      margin-bottom: 8px; transition: color 0.3s;
+    }
+    .svc:hover .svc-num { color: rgba(200,168,75,0.15); }
+    .svc-icon { font-size: 28px; margin-bottom: 20px; display: block; }
+    .svc h3 { font-size: 19px; font-weight: 600; margin-bottom: 14px; }
+    .svc p { font-size: 14px; color: var(--gray); line-height: 1.8; }
+    .svc-arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--gold); letter-spacing: 2px;
+      text-transform: uppercase; margin-top: 28px;
+      opacity: 0; transform: translateX(-8px);
+      transition: all 0.3s;
+    }
+    .svc:hover .svc-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ── NUMBERS ── */
+    #numbers {
+      padding: 100px 72px; background: var(--gold);
+    }
+    .numbers-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border-left: 1px solid rgba(4,9,15,0.15);
+    }
+    .num-block {
+      padding: 40px; border-right: 1px solid rgba(4,9,15,0.15);
+      text-align: center;
+    }
+    .num-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px; font-weight: 700; color: var(--ink); line-height: 1;
+    }
+    .num-label { font-size: 12px; color: rgba(4,9,15,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+
+    /* ── WHY ── */
+    #why { padding: 140px 72px; background: var(--deep); }
+    .why-inner { max-width: 1200px; margin: 0 auto; }
+    .why-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 80px; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .why-card {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.04);
+      padding: 40px 32px; transition: all 0.4s; position: relative;
+    }
+    .why-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.4s ease;
+    }
+    .why-card:hover { transform: translateY(-8px); border-color: var(--line); }
+    .why-card:hover::after { width: 100%; }
+    .why-icon { font-size: 32px; margin-bottom: 24px; display: block; }
+    .why-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+    .why-card p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+    /* ── PROCESS ── */
+    #process { padding: 140px 72px; background: var(--ink); }
+    .process-inner { max-width: 1200px; margin: 0 auto; }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 80px; position: relative;
+    }
+    .process-track {
+      position: absolute; top: 32px; left: 8%; right: 8%;
+      height: 1px; background: var(--line); z-index: 0;
+    }
+    .process-track-fill {
+      height: 100%; width: 0; background: var(--gold);
+      transition: width 1.5s ease;
+    }
+    .pstep { text-align: center; padding: 0 24px; position: relative; z-index: 1; }
+    .pstep-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 1px solid var(--gold); background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: var(--gold);
+      transition: all 0.3s;
+    }
+    .pstep:hover .pstep-circle { background: var(--gold); color: var(--ink); }
+    .pstep h4 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+    .pstep p { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+    /* ── CONTACT ── */
+    #contact { padding: 140px 72px; background: var(--deep); }
+    .contact-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 5fr 7fr; gap: 100px;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 0; }
+    .cinfo {
+      padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; gap: 20px; align-items: flex-start;
+      transition: padding-left 0.3s;
+    }
+    .cinfo:hover { padding-left: 8px; }
+    .cinfo-icon {
+      width: 44px; height: 44px; border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .cinfo-label { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .cinfo-val { font-size: 15px; font-weight: 500; }
+    .cinfo-val a { color: var(--white); text-decoration: none; transition: color 0.2s; }
+    .cinfo-val a:hover { color: var(--gold); }
+
+    .contact-form-wrap {
+      background: var(--card); border: 1px solid var(--line);
+      padding: 56px 48px;
+    }
+    .form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 700; margin-bottom: 40px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .fgroup { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .fgroup label { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+    .fgroup input, .fgroup textarea, .fgroup select {
+      background: var(--panel); border: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 18px; color: var(--white);
+      font-family: 'Inter', sans-serif; font-size: 14px;
+      outline: none; transition: border-color 0.3s;
+      appearance: none;
+    }
+    .fgroup input:focus, .fgroup textarea:focus, .fgroup select:focus { border-color: var(--gold); }
+    .fgroup textarea { min-height: 120px; resize: vertical; }
+    .fgroup select option { background: var(--panel); }
+    .form-btn {
+      width: 100%; background: var(--gold); color: var(--ink);
+      border: none; padding: 20px; font-size: 13px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s; margin-top: 8px; position: relative; overflow: hidden;
+    }
+    .form-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold2); transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .form-btn:hover::before { transform: translateX(0); }
+    .form-btn span { position: relative; z-index: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid var(--line);
+      padding: 48px 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: var(--gold); letter-spacing: 2px;
+    }
+    .footer-copy { font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+    .footer-nav { display: flex; gap: 32px; }
+    .footer-nav a {
+      font-size: 12px; color: var(--gray); text-decoration: none;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-left.in { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-right.in { opacity: 1; transform: translateX(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px){
+      nav, #hero, #about, #services, #numbers, #why, #process, #contact, footer { padding-left: 32px; padding-right: 32px; }
+      .hero-metrics { right: 32px; }
+      .nav-links { display: none; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 60px; }
+      .services-grid, .why-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 48px; }
+      .process-track { display: none; }
+      .numbers-inner { grid-template-columns: 1fr 1fr; }
+      .why-header { grid-template-columns: 1fr; }
+      .hero-metrics { position: static; flex-direction: row; margin-top: 60px; }
+      .metric-divider { width: 60px; height: 1px; margin: 0; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media(max-width:600px){
+      .services-grid, .why-grid { grid-template-columns: 1fr; }
+      .numbers-inner { grid-template-columns: 1fr 1fr; }
+      .hero-h1 { font-size: 44px; }
+      footer { flex-direction: column; text-align: center; }
+      .contact-form-wrap { padding: 32px 24px; }
+    }
   </style>
 </head>
 <body>
-<header>
-  <h1>Tax With Manoj</h1>
-  <p>Taxation • Accounting • Compliance • Business Advisory</p>
-</header>
-<section>
-  <h2>About</h2>
-  <div class="card">A professional platform providing taxation, accounting, compliance, and business advisory solutions with clarity and confidence.</div>
-  <h2>Services</h2>
-  <div class="card">Income Tax Compliance</div>
-  <div class="card">VAT Filing & Registration</div>
-  <div class="card">Accounting & Bookkeeping</div>
-  <div class="card">Financial Statements</div>
-  <div class="card">Business Advisory</div>
-  <h2>Contact</h2>
-  <div class="card">Email: rimalmanoj80@gmail.com</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">TAX WITH MANOJ</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Tax <span>With</span> Manoj</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Taxation · Audit · Advisory · Nepal</div>
+    <h1 class="hero-h1">
+      Where <em>Financial</em><br>
+      <span class="outline">Expertise</span> Meets<br>
+      <em>Results.</em>
+    </h1>
+    <p class="hero-sub">Nepal's trusted taxation and business advisory expert — delivering precision, compliance, and financial clarity to 500+ clients across every industry.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-gold"><span>Explore Services</span></a>
+      <a href="#contact" class="btn-ghost">Book Free Consultation</a>
+    </div>
+  </div>
+  <div class="hero-metrics">
+    <div>
+      <div class="metric-val" data-count="500">0</div>
+      <div class="metric-label">Clients Served</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div>
+      <div class="metric-val" data-count="8">0</div>
+      <div class="metric-label">Years Experience</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div>
+      <div class="metric-val" data-count="100">0</div>
+      <div class="metric-label">% Compliance Rate</div>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
-<footer>© 2026 Tax With Manoj. All rights reserved.</footer>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Income Tax<div class="marquee-dot"></div></div>
+    <div class="marquee-item">VAT Compliance<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Audit Services<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Business Advisory<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Financial Statements<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Company Registration<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Bookkeeping<div class="marquee-dot"></div></div>
+    <div class="marquee-item">IRD Filing<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Income Tax<div class="marquee-dot"></div></div>
+    <div class="marquee-item">VAT Compliance<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Audit Services<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Business Advisory<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Financial Statements<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Company Registration<div class="marquee-dot"></div></div>
+    <div class="marquee-item">Bookkeeping<div class="marquee-dot"></div></div>
+    <div class="marquee-item">IRD Filing<div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="reveal-left">
+      <div class="about-frame">
+        <div class="about-frame-icon">🧾</div>
+      </div>
+      <div class="about-accent">
+        <div class="about-accent-num">500+</div>
+        <div class="about-accent-text">Satisfied Clients</div>
+      </div>
+      <div class="about-corner"></div>
+    </div>
+    <div class="reveal-right">
+      <div class="section-eyebrow">About Manoj Rimal</div>
+      <h2 class="section-h2">The Expert Behind Every Successful Filing</h2>
+      <p class="section-body">Manoj Rimal is a seasoned taxation and audit expert based in Kathmandu, Nepal. With a proven record of serving 500+ clients — from solo entrepreneurs to large corporations — he delivers financial precision, IRD compliance, and strategic advisory that drives real business outcomes.</p>
+      <div class="about-pillars">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div>
+            <h4>Audit & Statutory Compliance</h4>
+            <p>Deep expertise in statutory and internal audit across diverse industries — ensuring your books are always board-ready.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div>
+            <h4>Tax Law Mastery</h4>
+            <p>Full command of Nepal's Income Tax Act, VAT Act, and IRD directives — minimizing liability, maximizing compliance.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div>
+            <h4>Strategic Business Advisory</h4>
+            <p>Beyond compliance — proactive financial strategy that helps businesses grow, scale, and make smarter decisions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-top reveal">
+    <div>
+      <div class="section-eyebrow">What We Offer</div>
+      <h2 class="section-h2">Professional Services</h2>
+    </div>
+    <p style="max-width:360px;color:var(--mist);font-size:15px;line-height:1.8;font-weight:300;">Comprehensive financial services built for businesses and individuals across Nepal — from day-one compliance to long-term advisory.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="svc">
+      <div class="svc-num">01</div>
+      <span class="svc-icon">📋</span>
+      <h3>Income Tax Compliance</h3>
+      <p>Personal and corporate income tax return filing, tax assessment responses, advance tax planning, and TDS reconciliation under Nepal's Income Tax Act.</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">02</div>
+      <span class="svc-icon">🧮</span>
+      <h3>VAT Registration & Filing</h3>
+      <p>Complete VAT registration, monthly and quarterly return filing, input/output reconciliation, and IRD correspondence management.</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">03</div>
+      <span class="svc-icon">📒</span>
+      <h3>Accounting & Bookkeeping</h3>
+      <p>Day-to-day bookkeeping, ledger management, payroll processing, bank reconciliation, and clean financial records — always audit-ready.</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">04</div>
+      <span class="svc-icon">📑</span>
+      <h3>Financial Statements</h3>
+      <p>Preparation of Balance Sheet, Profit & Loss, and Cash Flow statements fully compliant with Nepal Financial Reporting Standards (NFRS).</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">05</div>
+      <span class="svc-icon">🏢</span>
+      <h3>Company Registration</h3>
+      <p>End-to-end business registration with OCR, PAN/VAT registration, and all regulatory filings — from idea to operational entity in days.</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">06</div>
+      <span class="svc-icon">💼</span>
+      <h3>Business Advisory</h3>
+      <p>Strategic financial advisory, budgeting, cash flow planning, investment structuring, and decision support that puts your business ahead.</p>
+      <div class="svc-arrow">Learn More →</div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <div class="numbers-inner">
+    <div class="num-block reveal">
+      <div class="num-big" data-count="500">0</div>
+      <div class="num-label">Clients Served</div>
+    </div>
+    <div class="num-block reveal">
+      <div class="num-big" data-count="8">0</div>
+      <div class="num-label">Years of Experience</div>
+    </div>
+    <div class="num-block reveal">
+      <div class="num-big" data-count="1200">0</div>
+      <div class="num-label">Filings Completed</div>
+    </div>
+    <div class="num-block reveal">
+      <div class="num-big" data-count="100">0</div>
+      <div class="num-label">% IRD Compliance</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="why-inner">
+    <div class="why-header">
+      <div class="reveal-left">
+        <div class="section-eyebrow">Why Choose Us</div>
+        <h2 class="section-h2">The Standard Others Measure Against</h2>
+      </div>
+      <p class="reveal-right" style="color:var(--mist);font-size:15px;line-height:1.9;font-weight:300;">When your finances demand precision and your business demands results, you need an advisor who operates at the highest standard — every time.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <span class="why-icon">⚡</span>
+        <h4>Fast, Reliable Turnaround</h4>
+        <p>Deadlines are non-negotiable. Every filing, every report, delivered on time — without compromising accuracy.</p>
+      </div>
+      <div class="why-card reveal">
+        <span class="why-icon">🔒</span>
+        <h4>IRD Certified Compliance</h4>
+        <p>Every deliverable meets Nepal's IRD standards in full. Zero penalties, zero surprises — just clean compliance.</p>
+      </div>
+      <div class="why-card reveal">
+        <span class="why-icon">💡</span>
+        <h4>Proactive Tax Strategy</h4>
+        <p>Beyond filing — we identify tax-saving opportunities before deadlines arrive, not after.</p>
+      </div>
+      <div class="why-card reveal">
+        <span class="why-icon">🗣️</span>
+        <h4>Clear Communication</h4>
+        <p>No jargon, no confusion. You always know exactly what's happening with your finances and why.</p>
+      </div>
+      <div class="why-card reveal">
+        <span class="why-icon">💰</span>
+        <h4>Transparent Pricing</h4>
+        <p>Upfront, fixed fees. No hidden charges, no surprise invoices — just honest, professional service.</p>
+      </div>
+      <div class="why-card reveal">
+        <span class="why-icon">📈</span>
+        <h4>Growth-Oriented Advisory</h4>
+        <p>Our advisory goes beyond numbers — we help you build a stronger, more profitable business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div style="text-align:center" class="reveal">
+      <div class="section-eyebrow" style="justify-content:center">Our Approach</div>
+      <h2 class="section-h2">Four Steps to Financial Clarity</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-track"><div class="process-track-fill" id="trackFill"></div></div>
+      <div class="pstep reveal">
+        <div class="pstep-circle">1</div>
+        <h4>Free Consultation</h4>
+        <p>Understand your needs, scope the work, and define the best path forward — at no cost.</p>
+      </div>
+      <div class="pstep reveal">
+        <div class="pstep-circle">2</div>
+        <h4>Document Collection</h4>
+        <p>Secure, guided collection of everything needed — we tell you exactly what to provide.</p>
+      </div>
+      <div class="pstep reveal">
+        <div class="pstep-circle">3</div>
+        <h4>Expert Processing</h4>
+        <p>All preparation, calculation, and regulatory filing handled with full accuracy and care.</p>
+      </div>
+      <div class="pstep reveal">
+        <div class="pstep-circle">4</div>
+        <h4>Delivery & Report</h4>
+        <p>You receive all confirmations, reports, and a clear summary of every action taken.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal-left">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h2 class="section-h2">Let's Build Something Great Together</h2>
+      <p style="color:var(--mist);font-size:15px;line-height:1.9;font-weight:300;margin-bottom:48px;">Have a tax challenge or financial question? Reach out — your first consultation is completely free.</p>
+      <div class="contact-info">
+        <div class="cinfo">
+          <div class="cinfo-icon">📞</div>
+          <div>
+            <div class="cinfo-label">Phone</div>
+            <div class="cinfo-val"><a href="tel:+9779845876273">+977-9845876273</a></div>
+          </div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">✉️</div>
+          <div>
+            <div class="cinfo-label">Email</div>
+            <div class="cinfo-val"><a href="mailto:rimalmanoj80@gmail.com">rimalmanoj80@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">📍</div>
+          <div>
+            <div class="cinfo-label">Location</div>
+            <div class="cinfo-val">Kathmandu, Nepal</div>
+          </div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">🕐</div>
+          <div>
+            <div class="cinfo-label">Office Hours</div>
+            <div class="cinfo-val">Sun – Fri &nbsp;|&nbsp; 9:00 AM – 6:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="contact-form-wrap">
+        <div class="form-title">Start Your Free Consultation</div>
+        <div class="form-row">
+          <div class="fgroup">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your full name">
+          </div>
+          <div class="fgroup">
+            <label>Phone Number</label>
+            <input type="text" placeholder="+977-XXXXXXXXXX">
+          </div>
+        </div>
+        <div class="fgroup">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="fgroup">
+          <label>Service Required</label>
+          <select>
+            <option value="">Select a service...</option>
+            <option>Income Tax Compliance</option>
+            <option>VAT Registration & Filing</option>
+            <option>Accounting & Bookkeeping</option>
+            <option>Financial Statements</option>
+            <option>Company Registration</option>
+            <option>Business Advisory</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Message</label>
+          <textarea placeholder="Briefly describe your requirements..."></textarea>
+        </div>
+        <button class="form-btn" onclick="this.innerHTML='<span>Message Sent ✓</span>';this.style.background='#2a7a4b'"><span>Send Message →</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Tax With Manoj</div>
+  <div class="footer-copy">© 2026 Tax With Manoj · Kathmandu, Nepal · All Rights Reserved</div>
+  <nav class="footer-nav">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="mailto:rimalmanoj80@gmail.com">Email</a>
+  </nav>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hide'), 1900);
+});
+
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .svc, .why-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width='60px'; ring.style.height='60px'; ring.style.borderColor='rgba(200,168,75,0.8)'; });
+  el.addEventListener('mouseleave', () => { ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(200,168,75,0.5)'; });
+});
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 100);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Count-up animation
+function countUp(el, target, suffix = '') {
+  let start = 0;
+  const dur = 2000;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target) + (progress === 1 ? suffix : '');
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const target = parseInt(e.target.dataset.count);
+      const suffix = e.target.dataset.suffix || (e.target.dataset.count === '100' ? '%' : '+');
+      countUp(e.target, target, suffix);
+      countObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+// Process track fill
+const trackObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('trackFill').style.width = '100%';
+      trackObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const trackEl = document.getElementById('trackFill');
+if (trackEl) trackObs.observe(trackEl.parentElement);
+
+// Canvas particle field
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.5 + 0.3,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    alpha: Math.random() * 0.4 + 0.1
+  });
+}
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,168,75,${p.alpha})`;
+    ctx.fill();
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+  });
+  // draw lines between close particles
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(200,168,75,${0.06 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+</script>
 </body>
 </html>
